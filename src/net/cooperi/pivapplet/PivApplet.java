@@ -525,9 +525,10 @@ public class PivApplet extends Applet
 	{
 		final byte[] buffer = apdu.getBuffer();
 		short lc, len, cLen;
-		final PivSlot slot;
-		final PublicKey pubref;
+		PivSlot slot;
+		final RSAPublicKey pubref;
 		final KeyPair kpref;
+		byte key;
 
 		if (buffer[ISO7816.OFFSET_P1] != (byte)0x00) {
 			ISOException.throwIt(ISO7816.SW_INCORRECT_P1P2);
@@ -539,15 +540,16 @@ public class PivApplet extends Applet
 		if (key >= (byte)0x9A && key <= (byte)0x9E) {
 			final byte idx = (byte)(key - (byte)0x9A);
 			slot = slots[idx];
+		} else {
+			slot = slots[(byte)0x9C - (byte)0x9A];
 		}
 		
-		kpref = slot.asym;
-		pubref = kpref.getPublic();
+		pubref = (RSAPublicKey) slot.asym.getPublic();
 		len = pubref.getExponent(buffer, (short)0);
 		buffer[len++] = (byte) 0x00;
 		buffer[len++] = (byte) 0x00;
 		lc = pubref.getModulus(buffer, len);
-		apdu.setOutgoingAndSend((short)0, len+lc);
+		apdu.setOutgoingAndSend((short)0, (short)(len+lc));
 		
 	}
 
