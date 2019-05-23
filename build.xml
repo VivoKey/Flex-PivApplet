@@ -15,14 +15,14 @@
     for EC signing. This can only work with JC3.0.5, but will build an applet
     that is capable of PIV standards-compliant EC signing.
   -->
-  <property name="PIV_USE_EC_PRECOMPHASH" value="false" />
+  <property name="PIV_USE_EC_PRECOMPHASH" value="true" />
 
   <!--
     PIV_STRICT_CONTACTLESS: if true, strictly enforce the PIV spec requirements
     around which slots and keys are allowed to be used over the contactless
     interface. If false, allow anything to be used over contactless.
   -->
-  <property name="PIV_STRICT_CONTACTLESS" value="true" />
+  <property name="PIV_STRICT_CONTACTLESS" value="false" />
   <!--
     YKPIV_ATTESTATION: whether to build support for YubicoPIV attestation.
     Without this, the attestation slots and commands will all return
@@ -62,7 +62,7 @@
     <!-- Create the distribution directory -->
     <taskdef name="javacard" classname="pro.javacard.ant.JavaCard" classpath="ext/ant/ant-javacard.jar"/>
     <javacard>
-      <cap aid="a0:00:00:03:08:00:00:10" output="bin/PivApplet.cap" sources="src-gen" classes="bin" version="1.0">
+      <cap aid="a0:00:00:03:08:00:00:10:00" output="bin/PivApplet.cap" sources="src-gen" classes="bin" version="1.0">
         <applet class="net.cooperi.pivapplet.PivApplet" aid="a0:00:00:03:08:00:00:10:00:01:00"/>
       </cap>
     </javacard>

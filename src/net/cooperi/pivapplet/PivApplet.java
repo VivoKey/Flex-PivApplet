@@ -519,6 +519,37 @@ public class PivApplet extends Applet
 			}
 		}
 	}
+	
+	private void
+	processGetPub(APDU apdu)
+	{
+		final byte[] buffer = apdu.getBuffer();
+		short lc, len, cLen;
+		final PivSlot slot;
+		final PublicKey pubref;
+		final KeyPair kpref;
+
+		if (buffer[ISO7816.OFFSET_P1] != (byte)0x00) {
+			ISOException.throwIt(ISO7816.SW_INCORRECT_P1P2);
+			return;
+		}
+
+		key = buffer[ISO7816.OFFSET_P2];
+
+		if (key >= (byte)0x9A && key <= (byte)0x9E) {
+			final byte idx = (byte)(key - (byte)0x9A);
+			slot = slots[idx];
+		}
+		
+		kpref = slot.asym;
+		pubref = kpref.getPublic();
+		len = pubref.getExponent(buffer, (short)0);
+		buffer[len++] = (byte) 0x00;
+		buffer[len++] = (byte) 0x00;
+		lc = pubref.getModulus(buffer, len);
+		apdu.setOutgoingAndSend((short)0, len+lc);
+		
+	}
 
 	private void
 	processGetVersion(APDU apdu)
@@ -793,6 +824,7 @@ public class PivApplet extends Applet
 		if (slot == null) {
 			ISOException.throwIt(ISO7816.SW_INCORRECT_P1P2);
 			return;
+			
 		}
 
 		if (!slots[SLOT_9B].flags[PivSlot.F_UNLOCKED]) {
