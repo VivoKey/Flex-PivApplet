@@ -50,7 +50,7 @@ public class PivApplet extends Applet
 	};
 
 	private static final byte[] APP_NAME = {
-	    'P', 'i', 'v', 'A', 'p', 'p', 'l', 'e', 't'
+	    'V', 'i', 'v', 'o', 'P', 'i', 'v'
 	};
 
 	private static final byte[] DEFAULT_ADMIN_KEY = {
@@ -100,9 +100,10 @@ public class PivApplet extends Applet
 	private static final byte INS_SET_PIN_RETRIES = (byte)0xfa;
 	private static final byte INS_ATTEST = (byte)0xf9;
 	private static final byte INS_GET_SERIAL = (byte)0xf8;
-
 	/* Our own private extensions. */
 	private static final byte INS_SG_DEBUG = (byte)0xe0;
+	/* Vivokey-specific extensions. */
+	private static final byte INS_GET_PUB = (byte)0xe1;
 
 	/* ASSERT: tag.end() was called but tag has bytes left. */
 	protected static final short SW_TAG_END_ASSERT = (short)0x6F60;
@@ -314,7 +315,7 @@ public class PivApplet extends Applet
 
 		certSerial = new byte[16];
 		fascn = new byte[25];
-		expiry = new byte[] { '2', '0', '5', '0', '0', '1', '0', '1' };
+		expiry = new byte[] { '2', '0', '6', '0', '0', '1', '0', '1' };
 
 		slots = new PivSlot[MAX_SLOTS];
 		for (byte i = SLOT_9A; i <= SLOT_9E; ++i)
@@ -430,6 +431,10 @@ public class PivApplet extends Applet
 			lockPINAlwaysSlots();
 
 		switch (ins) {
+		case INS_GET_PUB:
+			/* Vivokey-specific */
+			processGetPub(apdu);
+			break;
 		case INS_GET_DATA:
 			processGetData(apdu);
 			break;
