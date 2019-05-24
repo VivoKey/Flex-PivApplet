@@ -373,6 +373,7 @@ public class PivApplet extends Applet
 		slots[SLOT_9E].asym = new KeyPair(KeyPair.ALG_RSA_CRT, (short)2048);
 		slots[SLOT_9E].asym.genKeyPair();
 		slots[SLOT_9E].imported = false;
+		slots[SLOT_9E].asymAlg = (byte) 0x07;
 
 		files[TAG_FINGERPRINTS] = new File();
 		files[TAG_FINGERPRINTS].contact = File.P_PIN;
