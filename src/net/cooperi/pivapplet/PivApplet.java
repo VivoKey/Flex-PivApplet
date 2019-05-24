@@ -363,12 +363,16 @@ public class PivApplet extends Applet
 		slots[SLOT_9C].cert = files[TAG_CERT_9C];
 		slots[SLOT_9C].pinPolicy = PivSlot.P_ALWAYS;
 
+
 		files[TAG_CERT_9D] = new File();
 		slots[SLOT_9D].cert = files[TAG_CERT_9D];
 
 		files[TAG_CERT_9E] = new File();
 		slots[SLOT_9E].cert = files[TAG_CERT_9E];
 		slots[SLOT_9E].pinPolicy = PivSlot.P_NEVER;
+		slots[SLOT_9E].asym = new KeyPair(KeyPair.ALG_RSA_CRT, (short)2048);
+		slots[SLOT_9E].asym.genKeyPair();
+		slots[SLOT_9E].imported = false;
 
 		files[TAG_FINGERPRINTS] = new File();
 		files[TAG_FINGERPRINTS].contact = File.P_PIN;
