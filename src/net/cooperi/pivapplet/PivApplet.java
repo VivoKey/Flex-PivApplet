@@ -213,7 +213,11 @@ public class PivApplet extends Applet
 	install(byte[] info, short off, byte len)
 	{
 		final PivApplet applet = new PivApplet();
-		applet.register();
+		try {
+			applet.register();
+		} catch (Exception e) {
+			applet.register(info, off, len);
+		}
 	}
 
 #if APPLET_USE_RESET_MEM
@@ -370,11 +374,12 @@ public class PivApplet extends Applet
 		files[TAG_CERT_9E] = new File();
 		slots[SLOT_9E].cert = files[TAG_CERT_9E];
 		slots[SLOT_9E].pinPolicy = PivSlot.P_NEVER;
-		slots[SLOT_9E].asym = new KeyPair(KeyPair.ALG_RSA_CRT, (short)2048);
-		slots[SLOT_9E].asym.genKeyPair();
-		slots[SLOT_9E].imported = false;
-		slots[SLOT_9E].asymAlg = (byte) 0x07;
-
+		try{
+			slots[SLOT_9E].asym = new KeyPair(KeyPair.ALG_RSA_CRT, (short)2048);
+			slots[SLOT_9E].asym.genKeyPair();
+			slots[SLOT_9E].imported = false;
+			slots[SLOT_9E].asymAlg = (byte) 0x07;
+		} catch (Exception e) {}
 		files[TAG_FINGERPRINTS] = new File();
 		files[TAG_FINGERPRINTS].contact = File.P_PIN;
 
