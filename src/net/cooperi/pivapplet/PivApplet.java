@@ -240,15 +240,19 @@ public class PivApplet extends Applet
 			rsaSha = Signature.getInstance(
 			    Signature.ALG_RSA_SHA_PKCS1, useResetMem);
 		} catch (CryptoException ex) {
-			#if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
-				#throw (ex);
+			/**
+			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
+				throw (ex);
+			**/
 		}
 		try {
 			rsaSha256 = Signature.getInstance(
 			    ALG_RSA_SHA_256_PKCS1, useResetMem);
 		} catch (CryptoException ex) {
-			#if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
-				#throw (ex);
+			/**
+			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
+				throw (ex);
+			**/
 		}
 #endif
 #endif
@@ -258,8 +262,10 @@ public class PivApplet extends Applet
 			ecdh = KeyAgreement.getInstance(ALG_EC_SVDP_DH_PLAIN,
 			    useResetMem);
 		} catch (CryptoException ex) {
-			#if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
-				#throw (ex);
+			/**
+			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
+				throw (ex);
+			**/
 		}
 
 		if (ecdh == null) {
@@ -267,9 +273,11 @@ public class PivApplet extends Applet
 				ecdh = KeyAgreement.getInstance(
 				    ALG_EC_SVDP_DHC_PLAIN, useResetMem);
 			} catch (CryptoException ex) {
-				#if (ex.getReason() !=
-				    #CryptoException.NO_SUCH_ALGORITHM)
-					#throw (ex);
+				/**
+				if (ex.getReason() !=
+				    CryptoException.NO_SUCH_ALGORITHM)
+					throw (ex);
+				**/
 			}
 		}
 
@@ -278,9 +286,11 @@ public class PivApplet extends Applet
 				ecdhSha = KeyAgreement.getInstance(
 				    KeyAgreement.ALG_EC_SVDP_DH, useResetMem);
 			} catch (CryptoException ex) {
-				#if (ex.getReason() !=
-				    #CryptoException.NO_SUCH_ALGORITHM)
-					#throw (ex);
+				/**
+				if (ex.getReason() !=
+				    CryptoException.NO_SUCH_ALGORITHM)
+					throw (ex);
+				**/
 			}
 		}
 
@@ -288,15 +298,18 @@ public class PivApplet extends Applet
 			ecdsaP256Sha = Signature.getInstance(
 			    Signature.ALG_ECDSA_SHA, useResetMem);
 		} catch (CryptoException ex) {
-			#if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
-				#throw (ex);
+			/**
+			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
+				throw (ex);
+			**/
 		}
 		try {
 			ecdsaP256Sha256 = Signature.getInstance(
 			    ECParams.ALG_ECDSA_SHA_256, useResetMem);
 		} catch (CryptoException ex) {
-			#if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
+			/*if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
 				#throw (ex);
+			**/
 		}
 #endif
 
