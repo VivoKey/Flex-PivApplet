@@ -14,6 +14,7 @@ import javacard.framework.OwnerPIN;
 
 import javacard.security.KeyPair;
 import javacard.security.SecretKey;
+import javacard.security.PublicKey;
 
 public class PivSlot {
 	public static final byte F_UNLOCKED = (byte)0;
@@ -35,6 +36,7 @@ public class PivSlot {
 	public SecretKey sym = null;
 	public byte symAlg = -1;
 	public byte id = (byte)0;
+	public PublicKey pubkey = null;
 
 	public boolean[] flags = null;
 

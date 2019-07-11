@@ -148,7 +148,7 @@ public class PivApplet extends Applet
 	private KeyAgreement ecdh = null;
 	private KeyAgreement ecdhSha = null;
 
-	private static final byte MAX_SLOTS = (byte)17;
+	private static final byte MAX_SLOTS = (byte)18;
 
 	private static final byte SLOT_9A = (byte)0;
 	private static final byte SLOT_9B = (byte)1;
@@ -158,6 +158,8 @@ public class PivApplet extends Applet
 	private static final byte SLOT_82 = (byte)5;
 	private static final byte SLOT_8C = (byte)15;
 	private static final byte SLOT_F9 = (byte)16;
+	// Added by Vivokey for secure messaging, needs setup 
+	private static final byte SLOT_A0 = (byte)17;
 	private PivSlot[] slots = null;
 	private byte retiredKeys = 0;
 
@@ -325,6 +327,7 @@ public class PivApplet extends Applet
 #if YKPIV_ATTESTATION
 		slots[SLOT_F9] = new PivSlot((byte)0xF9);
 #endif
+		slots[SLOT_A0] = new PivSlot((byte)0xA0);
 
 		files = new File[TAG_MAX + 1];
 		ykFiles = new File[YK_TAG_MAX + 1];
