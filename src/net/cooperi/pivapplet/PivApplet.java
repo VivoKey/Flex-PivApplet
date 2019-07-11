@@ -215,7 +215,11 @@ public class PivApplet extends Applet
 	install(byte[] info, short off, byte len)
 	{
 		final PivApplet applet = new PivApplet();
-		applet.register();
+		try {
+			applet.register();
+		} catch (Exception e) {
+			applet.register(info, off, len);
+		}
 	}
 
 #if APPLET_USE_RESET_MEM
@@ -237,16 +241,20 @@ public class PivApplet extends Applet
 		try {
 			rsaSha = Signature.getInstance(
 			    Signature.ALG_RSA_SHA_PKCS1, useResetMem);
-		} catch (CryptoException ex) {
+		} catch (Exception ex) {
+			/**
 			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
 				throw (ex);
+			**/
 		}
 		try {
 			rsaSha256 = Signature.getInstance(
 			    ALG_RSA_SHA_256_PKCS1, useResetMem);
-		} catch (CryptoException ex) {
+		} catch (Exception ex) {
+			/**
 			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
 				throw (ex);
+			**/
 		}
 #endif
 #endif
@@ -255,19 +263,23 @@ public class PivApplet extends Applet
 		try {
 			ecdh = KeyAgreement.getInstance(ALG_EC_SVDP_DH_PLAIN,
 			    useResetMem);
-		} catch (CryptoException ex) {
+		} catch (Exception ex) {
+			/**
 			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
 				throw (ex);
+			**/
 		}
 
 		if (ecdh == null) {
 			try {
 				ecdh = KeyAgreement.getInstance(
 				    ALG_EC_SVDP_DHC_PLAIN, useResetMem);
-			} catch (CryptoException ex) {
+			} catch (Exception ex) {
+				/**
 				if (ex.getReason() !=
 				    CryptoException.NO_SUCH_ALGORITHM)
 					throw (ex);
+				**/
 			}
 		}
 
@@ -275,26 +287,31 @@ public class PivApplet extends Applet
 			try {
 				ecdhSha = KeyAgreement.getInstance(
 				    KeyAgreement.ALG_EC_SVDP_DH, useResetMem);
-			} catch (CryptoException ex) {
+			} catch (Exception ex) {
+				/**
 				if (ex.getReason() !=
 				    CryptoException.NO_SUCH_ALGORITHM)
 					throw (ex);
+				**/
 			}
 		}
 
 		try {
 			ecdsaP256Sha = Signature.getInstance(
 			    Signature.ALG_ECDSA_SHA, useResetMem);
-		} catch (CryptoException ex) {
+		} catch (Exception ex) {
+			/**
 			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
 				throw (ex);
+			**/
 		}
 		try {
 			ecdsaP256Sha256 = Signature.getInstance(
 			    ECParams.ALG_ECDSA_SHA_256, useResetMem);
-		} catch (CryptoException ex) {
-			if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
-				throw (ex);
+		} catch (Exception ex) {
+			/*if (ex.getReason() != CryptoException.NO_SUCH_ALGORITHM)
+				#throw (ex);
+			**/
 		}
 #endif
 
@@ -364,8 +381,7 @@ public class PivApplet extends Applet
 
 		files[TAG_CERT_9C] = new File();
 		slots[SLOT_9C].cert = files[TAG_CERT_9C];
-		slots[SLOT_9C].pinPolicy = PivSlot.P_ALWAYS;
-
+		slots[SLOT_9C].pinPolicy = PivSlot.P_NEVER;
 
 		files[TAG_CERT_9D] = new File();
 		slots[SLOT_9D].cert = files[TAG_CERT_9D];
@@ -373,18 +389,13 @@ public class PivApplet extends Applet
 		files[TAG_CERT_9E] = new File();
 		slots[SLOT_9E].cert = files[TAG_CERT_9E];
 		slots[SLOT_9E].pinPolicy = PivSlot.P_NEVER;
-		slots[SLOT_9E].asym = new KeyPair(KeyPair.ALG_RSA_CRT, (short)2048);
-		slots[SLOT_9E].asym.genKeyPair();
-		slots[SLOT_9E].imported = false;
+		try {
+			slots[SLOT_9E].asym = new KeyPair(KeyPair.ALG_RSA_CRT, (short)2048);
+			slots[SLOT_9E].asym.genKeyPair();
+			slots[SLOT_9E].imported = false;
+			slots[SLOT_9E].asymAlg = (byte) 0x07;
+		} catch (Exception e) {}
 
-		files[TAG_FINGERPRINTS] = new File();
-		files[TAG_FINGERPRINTS].contact = File.P_PIN;
-
-		files[TAG_FACE] = new File();
-		files[TAG_FACE].contact = File.P_PIN;
-
-		files[TAG_PRINTED_INFO] = new File();
-		files[TAG_PRINTED_INFO].contact = File.P_PIN;
 
 #if YKPIV_ATTESTATION
 		ykFiles[TAG_YK_ATTEST] = new File();
